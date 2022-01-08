@@ -32,8 +32,6 @@ if [ $install_podman == "Y" ]; then
 	yum reinstall shadow-utils
 fi
 
-
-
 read -p "Install AWSCLI (Y/N): " install_aws
 
 if [ $install_aws == "Y" ]; then
@@ -44,4 +42,10 @@ if [ $install_aws == "Y" ]; then
 	rm -rf /tmp/aws*
 fi
 
+read -p "Install PowerShell (Y/N): " install_pwsh
+
+if [ $install_pwsh == "Y" ]; then
+	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
+	dnf install powershell
+fi
 
