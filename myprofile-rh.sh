@@ -5,6 +5,11 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+if [ ! -f /etc/redhat-release ]; then
+  echo "Not RH based."
+  exit
+fi
+
 packages="nano httpie wget git nc jq"
 
 cat <<EOT > /etc/profile.d/my-profile.sh
