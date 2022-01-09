@@ -5,25 +5,28 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-pkgs="nano httpie mc wget git nc"
+packages="nano httpie wget git nc jq"
 
 cat <<EOT > /etc/profile.d/my-profile.sh
-alias cls='clear'
+alias cls=clear
 alias egrep='egrep --color=auto'
 alias l='ls -alkh '
 alias ll='ls -alF'
 
 export BLOCK_SIZE=human-readable
 
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:\[\e[0;38;5;45m\]\w\[\e[0;38;5;249m\]\$\[\e[0m\] '
 EOT
 
 yum install epel-release -y
-yum install $pkgs -y
+yum install $packages -y
 
 cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
-wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh
 
+sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh'
+
+
+# Podman installation
 
 read -p "Install Podman (Y/N): " install_podman
 
@@ -31,6 +34,9 @@ if [ $install_podman == "Y" ]; then
 	yum install podman buildah -y
 	yum reinstall shadow-utils
 fi
+
+
+# AWSCLI installation
 
 read -p "Install AWSCLI (Y/N): " install_aws
 
@@ -42,10 +48,12 @@ if [ $install_aws == "Y" ]; then
 	rm -rf /tmp/aws*
 fi
 
+
+# PowerShell installation
+
 read -p "Install PowerShell (Y/N): " install_pwsh
 
 if [ $install_pwsh == "Y" ]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
 	dnf install powershell
 fi
-
