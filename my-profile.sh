@@ -8,10 +8,13 @@ fi
 packages="nano httpie wget git nc jq"
 
 cat <<EOT > /etc/profile.d/my-profile.sh
-alias cls=clear
+alias cls='clear'
 alias egrep='egrep --color=auto'
 alias l='ls -alkh '
 alias ll='ls -alF'
+alias ..='cd ..'
+alias mount='mount |column -t'
+alias h='history'
 
 export BLOCK_SIZE=human-readable
 
