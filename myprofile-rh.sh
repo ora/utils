@@ -12,6 +12,7 @@ if [ ! -f /etc/redhat-release ]; then
   exit
 fi
 
+
 # Profile stuff
 
 cat <<EOT > /etc/profile.d/my-profile.sh
@@ -45,9 +46,11 @@ yum install $packages -y
 
 if [ ! -f /usr/local/bin/micro ]; then
 	cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
+else
+    echo -e "\e[1;34mSkipping micro"
 fi
 
-[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh'
+[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "\e[1;34mSkipping nano"
 
 
 
