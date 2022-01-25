@@ -22,7 +22,7 @@ alias ll='ls -alF'
 alias ..='cd ..'
 alias mount='mount |column -t'
 alias h='history'
-alias gitp="git add -A && git commit -m \"$(whoami)@$(hostname) - $(date)\" && git push"
+alias gitp="git add -A && git commit -m \"$(whoami) - $(date)\" && git push"
 
 export BLOCK_SIZE=human-readable
 
