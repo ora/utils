@@ -23,27 +23,31 @@ alias ll='ls -alF'
 alias ..='cd ..'
 alias mount='mount |column -t'
 alias h='history'
+alias gitp="git add -A && git commit -m \"$(whoami)@$(hostname) - $(date)\" && git push"
 
 export BLOCK_SIZE=human-readable
 
 PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:\[\e[0;38;5;45m\]\w\[\e[0;38;5;249m\]\$\[\e[0m\] '
-EOT
-
-cat <<EOT >> /etc/bashrc
 
 python3 -c "print('\033[2 q')"
 
 source /etc/os-release && echo -e "\n\e[1;34m⚡ $(whoami)@$(hostname)  🖥️ \e[1;31m$PRETTY_NAME  🕧 \e[1;33m$(uptime -p)\n"
 EOT
 
+
 # Install packages
 
 yum install epel-release -y
 yum install $packages -y
 
+
+
+# Install nano
+
 cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
 
 sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh'
+
 
 
 # Podman installation
