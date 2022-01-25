@@ -15,7 +15,6 @@ fi
 # Profile stuff
 
 cat <<EOT > /etc/profile.d/my-profile.sh
-
 alias cls='clear'
 alias egrep='egrep --color=auto'
 alias l='ls -alkh '
@@ -42,11 +41,13 @@ yum install $packages -y
 
 
 
-# Install nano
+# Install micro and nano schemes
 
-cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
+if [ ! -f /usr/local/bin/micro ]; then
+	cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
+fi
 
-sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh'
+[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh'
 
 
 
