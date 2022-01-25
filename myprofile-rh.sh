@@ -13,7 +13,6 @@ if [ ! -f /etc/redhat-release ]; then
   exit
 fi
 
-
 # Profile stuff
 
 cat <<EOT > /etc/profile.d/my-profile.sh
