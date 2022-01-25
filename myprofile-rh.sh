@@ -1,5 +1,8 @@
 #!/bin/bash
 
+packages="nano httpie wget git nc jq unzip"
+
+
 if [ "$EUID" -ne 0 ]
   then echo "Run as root."
   exit
@@ -10,7 +13,6 @@ if [ ! -f /etc/redhat-release ]; then
   exit
 fi
 
-packages="nano httpie wget git nc jq unzip"
 
 # Profile stuff
 
