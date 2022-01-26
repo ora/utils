@@ -29,9 +29,9 @@ export BLOCK_SIZE=human-readable
 
 PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:\[\e[0;38;5;45m\]\w\[\e[0;38;5;249m\]\$\[\e[0m\] '
 
-python3 -c "print('\033[2 q')"
+#python3 -c "print('\033[2 q')"
 
-source /etc/os-release && echo -e "\n\e[1;34m⚡ $(whoami)@$(hostname)  🖥️ \e[1;31m$PRETTY_NAME  🕧 \e[1;33m$(uptime -p)\n"
+source /etc/os-release && echo -e "\n\e[1;34m⚡ $(whoami)@$(hostname) $PRETTY_NAME 🕧 \e[1;33m$(uptime -p)\n"
 EOT
 
 
@@ -41,32 +41,30 @@ yum install epel-release -y
 yum install $packages -y
 
 
-
 # Install micro and nano schemes
 
 if [ ! -f /usr/local/bin/micro ]; then
 	cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
 else
-    echo -e "\e[1;34mSkipping micro"
+    echo "Skipping micro"
 fi
 
-[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "\e[1;34mSkipping nano"
-
+[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano\n"
 
 
 # Podman installation
 
-read -p "Install Podman (Y/N): " install_podman
+read -n 1 -p "❓ Install Podman (y/n): " install_podman
 
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
 	yum install podman buildah -y
-	yum reinstall shadow-utils
+	yum reinstall shadow-utils -y
 fi
 
 
 # AWSCLI installation
 
-read -p "Install AWSCLI (Y/N): " install_aws
+echo -e "\n" && read -n 1 -p "❓ Install AWSCLI (y/n): " install_aws
 
 if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
 	cd /tmp
@@ -79,9 +77,11 @@ fi
 
 # PowerShell installation
 
-read -p "Install PowerShell (Y/N): " install_pwsh
+echo -e "\n" && read -n 1 -p "❓ Install PowerShell (y/n): " install_pwsh
 
 if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
 	dnf install powershell
 fi
+
+echo -e "\n"

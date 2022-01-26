@@ -1,0 +1,2 @@
+source /etc/os-release
+echo -e "\n\e[1;34m⚡ oleg@HMQX333  🖥️ \e[1;31mAlmaLinux 8.5 (Arctic Sphynx)  🕧 \e[1;33mup 16 hours, 45 minutes\n"
