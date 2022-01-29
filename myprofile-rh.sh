@@ -31,7 +31,7 @@ PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:
 
 #python3 -c "print('\033[2 q')"
 
-source /etc/os-release && echo -e "\n\e[1;34m⚡ $(whoami)@$(hostname) $PRETTY_NAME 🕧 \e[1;33m$(uptime -p)\n"
+source /etc/os-release && echo -e "\n\e[1;34m⚡ \$(whoami)@\$(hostname)  🖥️ \e[1;31m\$PRETTY_NAME  🕧 \e[1;33m\$(uptime -p)\n"
 EOT
 
 
@@ -54,7 +54,7 @@ fi
 
 # Podman installation
 
-read -n 1 -p "❓ Install Podman (y/n): " install_podman
+read -n 1 -p "Install Podman (y/n): " install_podman
 
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
 	yum install podman buildah -y
@@ -64,7 +64,7 @@ fi
 
 # AWSCLI installation
 
-echo -e "\n" && read -n 1 -p "❓ Install AWSCLI (y/n): " install_aws
+echo -e "\n" && read -n 1 -p "Install AWSCLI (y/n): " install_aws
 
 if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
 	cd /tmp
@@ -77,7 +77,7 @@ fi
 
 # PowerShell installation
 
-echo -e "\n" && read -n 1 -p "❓ Install PowerShell (y/n): " install_pwsh
+echo -e "\n" && read -n 1 -p "Install PowerShell (y/n): " install_pwsh
 
 if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
