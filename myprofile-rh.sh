@@ -37,24 +37,30 @@ EOT
 
 # Install packages
 
-yum install epel-release -y
-yum install $packages -y
+echo -e "\n" && read -n 1 -p "Install Packages [$packages] (y/n): " install_packages
 
+if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
+	yum install epel-release -y
+	yum install $packages -y
+fi
 
 # Install micro and nano schemes
 
-if [ ! -f /usr/local/bin/micro ]; then
-	cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
-else
-    echo "Skipping micro"
-fi
+echo -e "\n" && read -n 1 -p "Install Editors (y/n): " install_editors
 
-[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano\n"
+	if [[ $install_editors == "Y" || $install_editors == "y" ]]; then
+		if [ ! -f /usr/local/bin/micro ]; then
+        		cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
+		else
+			echo "Skipping micro"
+		fi
+	[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano\n"
+fi
 
 
 # Podman installation
 
-read -n 1 -p "Install Podman (y/n): " install_podman
+echo -e "\n" && read -n 1 -p "Install Podman (y/n): " install_podman
 
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
 	yum install podman buildah -y
