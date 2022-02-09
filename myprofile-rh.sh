@@ -17,7 +17,6 @@ fi
 
 cat <<EOT > /etc/profile.d/my-profile.sh
 alias cls='clear'
-alias egrep='egrep --color=auto'
 alias l='ls -alkh '
 alias ll='ls -alF'
 alias ..='cd ..'
@@ -25,6 +24,7 @@ alias mount='mount |column -t'
 alias h='history'
 alias gitp="git add -A && git commit -m \"$(whoami) - $(date)\" && git push"
 
+export GREP_OPTIONS='--color=auto' GREP_COLOR='1;33'
 export BLOCK_SIZE=human-readable
 
 PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:\[\e[0;38;5;45m\]\w\[\e[0;38;5;249m\]\$\[\e[0m\] '
