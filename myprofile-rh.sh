@@ -7,12 +7,6 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-if [ ! -f /etc/redhat-release ]; then
-  echo "Not RH based."
-  exit
-fi
-
-
 # Profile stuff
 
 cat <<EOT > /etc/profile.d/my-profile.sh
@@ -35,15 +29,6 @@ source /etc/os-release && echo -e "\n\e[1;30m→ \$(whoami)@\$(hostname)  § \$P
 EOT
 
 
-# Install packages
-
-echo -e "\n" && read -n 1 -p "Install Packages [$packages] (y/n): " install_packages
-
-if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-	yum install epel-release -y
-	yum install $packages -y
-fi
-
 # Install micro and nano schemes
 
 echo -e "\n" && read -n 1 -p "Install Editors (y/n): " install_editors
@@ -55,16 +40,6 @@ echo -e "\n" && read -n 1 -p "Install Editors (y/n): " install_editors
 			echo "Skipping micro"
 		fi
 	[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano\n"
-fi
-
-
-# Podman installation
-
-echo -e "\n" && read -n 1 -p "Install Podman (y/n): " install_podman
-
-if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
-	yum install podman buildah -y
-	yum reinstall shadow-utils -y
 fi
 
 
@@ -90,4 +65,27 @@ if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	dnf install powershell
 fi
 
-echo -e "\n"
+if [ ! -f /etc/redhat-release ]; then
+  echo "Not Red Hat based."
+  exit
+fi
+
+
+# Install yum packages
+
+echo -e "\n" && read -n 1 -p "Install Packages [$packages] (y/n): " install_packages
+
+if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
+        yum install epel-release -y
+        yum install $packages -y
+fi
+
+
+# Podman installation
+
+echo -e "\n" && read -n 1 -p "Install Podman (y/n): " install_podman
+
+if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
+        yum install podman buildah -y
+        yum reinstall shadow-utils -y
+fi
