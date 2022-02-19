@@ -92,3 +92,5 @@ if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
         yum install podman buildah -y
         yum reinstall shadow-utils -y
 fi
+
+echo -e "\n"
