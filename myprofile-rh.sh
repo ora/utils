@@ -2,6 +2,10 @@
 
 packages="nano httpie wget git nc jq unzip"
 profile_config="/etc/profile.d/my-profile.sh"
+trst=`tput sgr0`
+tgrn=`tput setaf 2`
+tyel=`tput setaf 3`
+tdim=`tput dim`
 
 if [ "$EUID" -ne 0 ]
   then echo "Run as root."
@@ -10,7 +14,7 @@ fi
 
 # Profile stuff
 
-tput setaf 2; echo -e "\nInstalling profile to $profile_config\n"
+echo -e "\n${tgrn}Adding profile customizations → ${tyel}$profile_config\n"
 
 cat <<EOT > $profile_config
 alias cls='clear'
@@ -34,7 +38,7 @@ EOT
 
 # Install micro and nano schemes
 
-tput setaf 3; read -p "Install Editors (y/n): " install_editors
+read -p "${tgrn}Install Editors ${tyel}[y/n]${trst} " install_editors
 
 	if [[ $install_editors == "Y" || $install_editors == "y" ]]; then
 		if [ ! -f /usr/local/bin/micro ]; then
@@ -48,7 +52,7 @@ fi
 
 # AWSCLI installation
 
-read -p "Install AWSCLI (y/n): " install_aws
+read -p "${tgrn}Install AWSCLI ${tyel}[y/n]${trst} " install_aws
 
 if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
 	cd /tmp
@@ -61,7 +65,7 @@ fi
 
 # PowerShell installation
 
-read -p "Install PowerShell (y/n): " install_pwsh
+read -p "${tgrn}Install PowerShell ${tyel}[y/n]${trst} " install_pwsh
 
 if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
@@ -76,7 +80,7 @@ fi
 
 # Install yum packages
 
-read -p "Install Packages [$packages] (y/n): " install_packages
+read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
 
 if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
         yum install epel-release -y
@@ -86,7 +90,7 @@ fi
 
 # Podman installation
 
-read -p "Install Podman (y/n): " install_podman
+read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
 
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
         yum install podman buildah -y
