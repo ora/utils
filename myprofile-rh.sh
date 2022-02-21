@@ -78,16 +78,6 @@ if [ ! -f /etc/redhat-release ]; then
 fi
 
 
-# Install yum packages
-
-read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
-
-if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-        yum install epel-release -y
-        yum install $packages -y
-fi
-
-
 # Podman installation
 
 read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
@@ -95,4 +85,14 @@ read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
         yum install podman buildah -y
         yum reinstall shadow-utils -y
+fi
+
+
+# Install yum packages
+
+read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
+
+if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
+        yum install epel-release -y
+        yum install $packages -y
 fi
