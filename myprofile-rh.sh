@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packages="nano httpie wget git nc jq unzip"
+packages="nano httpie wget git nc jq unzip bind-utils"
 profile_config="/etc/profile.d/my-profile.sh"
 trst=`tput sgr0`
 tgrn=`tput setaf 2`
