@@ -17,12 +17,13 @@ fi
 echo -e "\n${tgrn}Adding profile customizations → ${tyel}$profile_config\n"
 
 cat <<EOT > $profile_config
-alias cls='clear'
-alias l='ls -alkh '
-alias ll='ls -alF'
-alias ..='cd ..'
-alias mount='mount |column -t'
-alias h='history'
+alias cls="clear"
+alias l="ls -alkh "
+alias ll="ls -alF "
+alias ..="cd .."
+alias ~="cd ~"
+alias mount="mount | column -t"
+alias h="history"
 alias gitp="git add -A && git commit -m \"$(whoami) - $(date)\" && git push"
 
 export BLOCK_SIZE=human-readable
