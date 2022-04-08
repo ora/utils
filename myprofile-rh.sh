@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packages="nano httpie wget git nc jq unzip bind-utils"
+packages="nano httpie wget git nc jq unzip bind-utils htop"
 profile_config="/etc/profile.d/my-profile.sh"
 trst=`tput sgr0`
 tgrn=`tput setaf 2`
@@ -46,7 +46,7 @@ read -p "${tgrn}Install Editors ${tyel}[y/n]${trst} " install_editors
 		else
 			echo "Skipping micro"
 		fi
-	[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano\n"
+	[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano schemes\n"
 fi
 
 
@@ -63,18 +63,19 @@ if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
 fi
 
 
+if [ ! -f /etc/redhat-release ]; then
+  echo "Remaining steps require a Red Hat compatbile system."
+  exit
+fi
+
+
 # PowerShell installation
 
 read -p "${tgrn}Install PowerShell ${tyel}[y/n]${trst} " install_pwsh
 
 if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
-	dnf install powershell
-fi
-
-if [ ! -f /etc/redhat-release ]; then
-  echo "Not Red Hat based."
-  exit
+	yum install powershell -y
 fi
 
 
