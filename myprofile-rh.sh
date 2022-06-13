@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packages="nano httpie wget git nc jq unzip bind-utils htop"
+packages="nano httpie wget git nc jq unzip bind-utils htop hostname"
 profile_config="/etc/profile.d/my-profile.sh"
 trst=`tput sgr0`
 tgrn=`tput setaf 2`
@@ -36,6 +36,22 @@ source /etc/os-release && echo -e "\n\e[1;30m→ \$(whoami)@\$(hostname)  § \$P
 EOT
 
 
+if [ ! -f /etc/redhat-release ]; then
+  echo "Remaining steps require a Red Hat compatbile system."
+  exit
+fi
+
+
+# Install yum packages
+
+read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
+
+if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
+        yum install epel-release -y
+        yum install $packages -y
+fi
+
+
 # Install micro and nano schemes
 
 read -p "${tgrn}Install Editors ${tyel}[y/n]${trst} " install_editors
@@ -55,17 +71,11 @@ fi
 read -p "${tgrn}Install AWSCLI ${tyel}[y/n]${trst} " install_aws
 
 if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
-	cd /tmp
-	curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-	unzip awscliv2.zip
-	./aws/install --update
-	rm -rf /tmp/aws*
-fi
-
-
-if [ ! -f /etc/redhat-release ]; then
-  echo "Remaining steps require a Red Hat compatbile system."
-  exit
+  dnf install curl unzip -y
+  curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip -q /tmp/awscliv2.zip -d /tmp
+  sudo /tmp/aws/install --update
+  rm -rf /tmp/awscliv2.zip /tmp/aws
 fi
 
 
@@ -86,14 +96,4 @@ read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
         yum install podman buildah -y
         yum reinstall shadow-utils -y
-fi
-
-
-# Install yum packages
-
-read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
-
-if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-        yum install epel-release -y
-        yum install $packages -y
 fi
