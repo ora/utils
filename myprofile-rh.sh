@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packages="nano httpie wget git nc jq unzip bind-utils htop hostname"
+packages="nano httpie wget git jq unzip bind-utils htop hostname"
 profile_config="/etc/profile.d/my-profile.sh"
 trst=`tput sgr0`
 tgrn=`tput setaf 2`
@@ -47,7 +47,7 @@ fi
 read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
 
 if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-        yum install epel-release -y
+        yum install epel-release python3 -y
         yum install $packages -y
 fi
 
