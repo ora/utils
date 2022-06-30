@@ -43,7 +43,6 @@ if [ ! -f /etc/redhat-release ]; then
 fi
 
 
-
 # Install yum packages
 
 read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
@@ -52,7 +51,6 @@ if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
         yum install epel-release python3 -y
         yum install $packages -y
 fi
-
 
 
 # Install micro and nano schemes
@@ -69,7 +67,6 @@ read -p "${tgrn}Install Editors ${tyel}[y/n]${trst} " install_editors
 fi
 
 
-
 # AWSCLI installation
 
 read -p "${tgrn}Install AWSCLI ${tyel}[y/n]${trst} " install_aws
@@ -83,7 +80,6 @@ if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
 fi
 
 
-
 # PowerShell installation
 
 read -p "${tgrn}Install PowerShell ${tyel}[y/n]${trst} " install_pwsh
@@ -92,7 +88,6 @@ if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
 	yum install powershell -y
 fi
-
 
 
 # Podman installation
