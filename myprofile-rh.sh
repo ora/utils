@@ -24,7 +24,8 @@ alias ..="cd .."
 alias ~="cd ~"
 alias mount="mount | column -t"
 alias h="history"
-alias gitp="git add -A && git commit -m \"$(whoami) - $(date)\" && git push"
+alias gitp="git add -A && git commit -m \"\$(whoami) - \$(date)\" && git push"
+alias amzw="aws sts get-caller-identity | jq"
 
 export BLOCK_SIZE=human-readable
 
