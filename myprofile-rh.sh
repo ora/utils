@@ -37,7 +37,6 @@ source /etc/os-release && echo -e "\n\e[1;30m→ \$(whoami)@\$(hostname)  § \$P
 EOT
 
 
-
 if [ ! -f /etc/redhat-release ]; then
   echo "Remaining steps require a Red Hat compatbile system."
   exit
