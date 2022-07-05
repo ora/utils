@@ -25,7 +25,7 @@ alias ~="cd ~"
 alias mount="mount | column -t"
 alias h="history"
 alias gitp="git add -A && git commit -m \"\$(whoami) - \$(date)\" && git push"
-alias awsw="aws sts get-caller-identity | jq"
+alias amzw="aws sts get-caller-identity | jq && echo $'\e[1;33m'Account: $(aws organizations describe-account --profile admin --account-id $(aws sts get-caller-identity --query "Account" --output text) --query "Account.Name" --output text)$'\e[0m'"
 
 export BLOCK_SIZE=human-readable
 
