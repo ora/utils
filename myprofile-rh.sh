@@ -7,6 +7,7 @@ tgrn=`tput setaf 2`
 tyel=`tput setaf 3`
 tdim=`tput dim`
 
+
 if [ "$EUID" -ne 0 ]
   then echo "Run as root."
   exit
