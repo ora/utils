@@ -26,13 +26,13 @@ alias ~="cd ~"
 alias mount="mount | column -t"
 alias h="history"
 alias gitp='git add -A && git commit -m "\$(whoami) - \$(date)" && git push'
-alias amzw="aws sts get-caller-identity | jq && echo $'\e[1;33m'Account: \$(aws organizations describe-account --profile admin --account-id \$(aws sts get-caller-identity --query "Account" --output text) --query "Account.Name" --output text)$'\e[0m'"
+#alias amzw="aws sts get-caller-identity | jq && aws organizations describe-account --profile admin --account-id \$(aws sts get-caller-identity --query \"Account\" --output text) --query \"Account.Name\" --output text"
 
 export BLOCK_SIZE=human-readable
 
 PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:\[\e[0;38;5;45m\]\w\[\e[0;38;5;249m\]\$\[\e[0m\] '
 
-python -c "print('\033[2 q')"
+python3 -c "print('\033[2 q')"
 
 source /etc/os-release && echo -e "\n\e[1;30m→ \$(whoami)@\$(hostname)  § \$PRETTY_NAME  ↑ \$(uptime -p)\e[0m\n"
 EOT
