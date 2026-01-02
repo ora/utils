@@ -1,12 +1,14 @@
 #!/bin/bash
+# curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=~/bin sh
+# dnf install bat / apt install bat
 
-packages="nano httpie wget git jq unzip bind-utils htop hostname"
+
+packages="nano httpie wget git jq unzip bind-utils htop hostname bat"
 profile_config="/etc/profile.d/my-profile.sh"
 trst=`tput sgr0`
 tgrn=`tput setaf 2`
 tyel=`tput setaf 3`
 tdim=`tput dim`
-
 
 if [ "$EUID" -ne 0 ]
   then echo "Run as root."
@@ -25,7 +27,6 @@ alias ..="cd .."
 alias ~="cd ~"
 alias mount="mount | column -t"
 alias h="history"
-#alias gitp='git add -A && git commit -m "\$(whoami) - \$(date)" && git push'
 
 export BLOCK_SIZE=human-readable
 
@@ -45,6 +46,17 @@ function gitpush()
         git commit -a -m "$1";
         git push;
         }
+
+function ipinfo()
+	{
+	if [ -z "$1" ]
+  	then
+    	echo "No IP."
+	else
+		curl --silent http://ip-api.com/json/$1?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query | jq
+	fi
+	}
+
 EOT
 
 
