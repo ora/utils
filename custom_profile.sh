@@ -54,8 +54,6 @@ ipinfo(){
 }
 EOT
 
-# Install packages
-
 read -n1 -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/N]${trst} " r; echo
 if [[ $r =~ [Yy] ]]; then
     echo "Installing snitch"
@@ -66,32 +64,23 @@ if [[ $r =~ [Yy] ]]; then
     $installer $packages
 fi
 
-# AWSCLI installation
-
-read -p "${tgrn}Install AWSCLI ${tyel}[y/n]${trst} " install_aws
-
-if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
+read -n1 -p "${tgrn}Install AWS CLI ${tyel}[y/N]${trst} " r; echo
+[[ $r =~ [Yy] ]] && {
   $installer curl unzip -y
-  curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip
   unzip -q /tmp/awscliv2.zip -d /tmp
   sudo /tmp/aws/install --update
   rm -rf /tmp/awscliv2.zip /tmp/aws
-fi
+}
 
-# PowerShell installation
+read -n1 -p "${tgrn}Install PowerShell ${tyel}[y/N]${trst} " r; echo
+[[ $r =~ [Yy] ]] && {
+  curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
+  $installer powershell -y
+}
 
-read -p "${tgrn}Install PowerShell ${tyel}[y/n]${trst} " install_pwsh
-
-if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
-	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
-	$installer powershell -y
-fi
-
-# Podman installation
-
-read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
-
-if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
-        $installer podman buildah -y
-#        $installer reinstall shadow-utils -y
-fi
+read -n1 -p "${tgrn}Install Podman ${tyel}[y/N]${trst} " r; echo
+[[ $r =~ [Yy] ]] && {
+  $installer podman buildah -y
+  (command -v dnf || command -v yum) >/dev/null && yum reinstall shadow-utils -y
+}
