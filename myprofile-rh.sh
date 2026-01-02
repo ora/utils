@@ -5,15 +5,15 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-if command -v apt-get >/dev/null; then I="sudo apt-get install -y"
-elif command -v dnf >/dev/null; then I="sudo dnf install -y"
-elif command -v yum >/dev/null; then I="sudo yum install -y"
-elif command -v pacman >/dev/null; then I="sudo pacman -S --noconfirm"
-elif command -v zypper >/dev/null; then I="sudo zypper install -y"
-elif command -v apk >/dev/null; then I="sudo apk add"
+if command -v apt-get >/dev/null; then installer="sudo apt-get install -y"
+elif command -v dnf >/dev/null; then installer="sudo dnf install -y"
+elif command -v yum >/dev/null; then installer="sudo yum install -y"
+elif command -v pacman >/dev/null; then installer="sudo pacman -S --noconfirm"
+elif command -v zypper >/dev/null; then installer="sudo zypper install -y"
+elif command -v apk >/dev/null; then installer="sudo apk add"
 else echo "Package manager not found." && exit 1; fi
 
-packages="nano httpie wget git jq unzip bind-utils htop hostname bat"
+packages="nano httpie wget git jq unzip bind9-utils htop hostname bat"
 profile_config="/etc/profile.d/custom_profile.sh"
 
 trst=`tput sgr0`
@@ -55,20 +55,18 @@ ipinfo(){
 EOT
 
 # if [ ! -f /etc/redhat-release ]; then
-#   echo "Remaining steps require a Red Hat compatbile system."
+#   echo "Remaining steps require a Red Hat compatible system."
 #   exit
 # fi
 
 # Install packages
 
-read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
-
-if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-        curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=~/bin sh
-        # yum install epel-release python3 -y
-        $I $packages
+read -n1 -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/N]${trst} " r; echo
+if [[ $r =~ [Yy] ]]; then
+    curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=/usr/bin/ sh
+    (command -v dnf || command -v yum) >/dev/null && dnf install epel-release python3 -y
+    $installer $packages
 fi
-
 
 # Install micro and nano schemes
 
@@ -88,7 +86,7 @@ fi
 read -p "${tgrn}Install AWSCLI ${tyel}[y/n]${trst} " install_aws
 
 if [[ $install_aws == "Y" || $install_aws == "y" ]]; then
-  dnf install curl unzip -y
+  $installer curl unzip -y
   curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
   unzip -q /tmp/awscliv2.zip -d /tmp
   sudo /tmp/aws/install --update
@@ -102,7 +100,7 @@ read -p "${tgrn}Install PowerShell ${tyel}[y/n]${trst} " install_pwsh
 
 if [[ $install_pwsh == "Y" || $install_pwsh == "y" ]]; then
 	curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | tee /etc/yum.repos.d/microsoft.repo
-	yum install powershell -y
+	$installer powershell -y
 fi
 
 
@@ -111,6 +109,6 @@ fi
 read -p "${tgrn}Install Podman ${tyel}[y/n]${trst} " install_podman
 
 if [[ $install_podman == "Y" || $install_podman == "y" ]]; then
-        yum install podman buildah -y
-        yum reinstall shadow-utils -y
+        $installer podman buildah -y
+#        $installer reinstall shadow-utils -y
 fi
