@@ -1,19 +1,25 @@
 #!/bin/bash
-# curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=~/bin sh
-# dnf install bat / apt install bat
-
-
-packages="nano httpie wget git jq unzip bind-utils htop hostname bat"
-profile_config="/etc/profile.d/my-profile.sh"
-trst=`tput sgr0`
-tgrn=`tput setaf 2`
-tyel=`tput setaf 3`
-tdim=`tput dim`
 
 if [ "$EUID" -ne 0 ]
   then echo "Run as root."
   exit
 fi
+
+if command -v apt-get >/dev/null; then I="sudo apt-get install -y"
+   2   │ elif command -v dnf >/dev/null; then I="sudo dnf install -y"
+   3   │ elif command -v yum >/dev/null; then I="sudo yum install -y"
+   4   │ elif command -v pacman >/dev/null; then I="sudo pacman -S --noconfirm"
+   5   │ elif command -v zypper >/dev/null; then I="sudo zypper install -y"
+   6   │ elif command -v apk >/dev/null; then I="sudo apk add"
+   7   │ else echo "Package manager not found." && exit 1; fi
+
+packages="nano httpie wget git jq unzip bind-utils htop hostname bat"
+profile_config="/etc/profile.d/custom_profile.sh"
+
+trst=`tput sgr0`
+tgrn=`tput setaf 2`
+tyel=`tput setaf 3`
+tdim=`tput dim`
 
 # Add profile customizations
 
@@ -36,43 +42,31 @@ python3 -c "print('\033[2 q')"
 
 source /etc/os-release && echo -e "\n\e[1;30m→ \$(whoami)@\$(hostname)  § \$PRETTY_NAME  ↑ \$(uptime -p)\e[0m\n"
 
-function gitpush()
-        {
-        if [ -z "$1" ]; then
-        echo "Missing comment."
-        return 1
-            fi
-        git add .;
-        git commit -a -m "$1";
-        git push;
-        }
+gitpush(){
+  [ "$1" ] || { echo "Missing comment."; return 1; }
+  git add . && git commit -am "$1" && git push
+}
 
-function ipinfo()
-	{
-	if [ -z "$1" ]
-  	then
-    	echo "No IP."
-	else
-		curl --silent http://ip-api.com/json/$1?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query | jq
-	fi
-	}
-
+ipinfo(){
+  [[ $1 =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] &&
+  curl -s "http://ip-api.com/json/$1?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query" | jq ||
+  echo "Invalid or missing IP."
+}
 EOT
 
+# if [ ! -f /etc/redhat-release ]; then
+#   echo "Remaining steps require a Red Hat compatbile system."
+#   exit
+# fi
 
-if [ ! -f /etc/redhat-release ]; then
-  echo "Remaining steps require a Red Hat compatbile system."
-  exit
-fi
-
-
-# Install yum packages
+# Install packages
 
 read -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/n]${trst} " install_packages
 
 if [[ $install_packages == "Y" || $install_packages == "y" ]]; then
-        yum install epel-release python3 -y
-        yum install $packages -y
+        curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=~/bin sh
+        # yum install epel-release python3 -y
+        $I $packages
 fi
 
 
@@ -88,7 +82,6 @@ read -p "${tgrn}Install Editors ${tyel}[y/n]${trst} " install_editors
 		fi
 	[[ ! -e "/home/$SUDO_USER/.nanorc" ]] && sudo runuser -l $SUDO_USER -c 'wget -q https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh' || echo -e "Skipping nano schemes\n"
 fi
-
 
 # AWSCLI installation
 
