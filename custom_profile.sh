@@ -13,7 +13,7 @@ elif command -v zypper >/dev/null; then installer="sudo zypper install -y"
 elif command -v apk >/dev/null; then installer="sudo apk add"
 else echo "Package manager not found." && exit 1; fi
 
-packages="nano httpie wget git jq unzip bind9-utils htop hostname bat"
+packages="nano httpie wget git jq unzip bind9-utils htop hostname bat duf fzf gping"
 profile_config="/etc/profile.d/custom_profile.sh"
 
 trst=`tput sgr0`
@@ -56,10 +56,10 @@ EOT
 
 read -n1 -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/N]${trst} " r; echo
 if [[ $r =~ [Yy] ]]; then
-    echo "Installing snitch"
+    echo "Also installing: snitch, micro"
     curl -sSL https://raw.githubusercontent.com/karol-broda/snitch/master/install.sh | INSTALL_DIR=/usr/bin/ sh
-    echo installing "micro"
     cd ~ && curl -s https://getmic.ro | bash && mv ~/micro /usr/local/bin/
+
     (command -v dnf || command -v yum) >/dev/null && dnf install epel-release python3 -y
     $installer $packages
 fi
@@ -73,7 +73,7 @@ read -n1 -p "${tgrn}Install AWS CLI ${tyel}[y/N]${trst} " r; echo
   rm -rf /tmp/awscliv2.zip /tmp/aws
 }
 
-read -n1 -p "${tgrn}Install PowerShell ${tyel}[y/N]${trst} " r; echo
+read -n1 -p "${tgrn}Install PowerShell (RH) ${tyel}[y/N]${trst} " r; echo
 [[ $r =~ [Yy] ]] && {
   curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
   $installer powershell -y
