@@ -6,12 +6,12 @@ if [ "$EUID" -ne 0 ]
 fi
 
 if command -v apt-get >/dev/null; then I="sudo apt-get install -y"
-   2   │ elif command -v dnf >/dev/null; then I="sudo dnf install -y"
-   3   │ elif command -v yum >/dev/null; then I="sudo yum install -y"
-   4   │ elif command -v pacman >/dev/null; then I="sudo pacman -S --noconfirm"
-   5   │ elif command -v zypper >/dev/null; then I="sudo zypper install -y"
-   6   │ elif command -v apk >/dev/null; then I="sudo apk add"
-   7   │ else echo "Package manager not found." && exit 1; fi
+elif command -v dnf >/dev/null; then I="sudo dnf install -y"
+elif command -v yum >/dev/null; then I="sudo yum install -y"
+elif command -v pacman >/dev/null; then I="sudo pacman -S --noconfirm"
+elif command -v zypper >/dev/null; then I="sudo zypper install -y"
+elif command -v apk >/dev/null; then I="sudo apk add"
+else echo "Package manager not found." && exit 1; fi
 
 packages="nano httpie wget git jq unzip bind-utils htop hostname bat"
 profile_config="/etc/profile.d/custom_profile.sh"
