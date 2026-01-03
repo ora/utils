@@ -1,9 +1,6 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-  then echo "Run as root."
-  exit
-fi
+[ "$EUID" -ne 0 ] && { echo "Not root"; exit; }
 
 if command -v apt-get >/dev/null; then installer="sudo apt-get install -y"
 elif command -v dnf >/dev/null; then installer="sudo dnf install -y"
@@ -73,7 +70,7 @@ read -n1 -p "${tgrn}Install AWS CLI ${tyel}[y/N]${trst} " r; echo
   rm -rf /tmp/awscliv2.zip /tmp/aws
 }
 
-read -n1 -p "${tgrn}Install PowerShell (RH) ${tyel}[y/N]${trst} " r; echo
+read -n1 -p "${tgrn}Install PowerShell (Red Hat) ${tyel}[y/N]${trst} " r; echo
 [[ $r =~ [Yy] ]] && {
   curl -s https://packages.microsoft.com/config/rhel/8/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo
   $installer powershell -y
