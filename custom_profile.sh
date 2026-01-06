@@ -22,7 +22,7 @@ tdim=`tput dim`
 
 echo -e "\n${tgrn}Adding profile customizations → ${tyel}$profile_config\n"
 
-cat <<EOT > $profile_config
+cat << 'EOF' > $profile_config
 alias cls="clear"
 alias l="ls -alkh "
 alias ll="ls -alF "
@@ -49,7 +49,7 @@ ipinfo(){
   curl -s "http://ip-api.com/json/$1?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query" | jq ||
   echo "Invalid or missing IP"
 }
-EOT
+EOF
 
 read -n1 -p "${tgrn}Install Packages ${tdim}[$packages]${trst} ${tyel}[y/N]${trst} " r; echo
 if [[ $r =~ [Yy] ]]; then
