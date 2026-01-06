@@ -45,7 +45,7 @@ gitpush(){
 }
 
 ipinfo(){
-  [[ '$1' =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] &&
+  [[ "$1" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] &&
   curl -s "http://ip-api.com/json/$1?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query" | jq ||
   echo "Invalid or missing IP"
 }
