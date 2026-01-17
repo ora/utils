@@ -37,9 +37,9 @@ PS1='\[\e[0;38;5;49m\]\u\[\e[0;38;5;49m\]@\[\e[0;38;5;49m\]\H\[\e[0;38;5;250m\]:
 
 python3 -c "print('\033[2 q')"
 
-source /etc/os-release && echo -e "\n\e[1;30m→ $(whoami)@\$(hostname)  § $PRETTY_NAME  ↑ $(uptime -p)\e[0m\n"
+source /etc/os-release && echo -e "\n\e[1;30m→ $(whoami)@$(hostname)  § $PRETTY_NAME  ↑ $(uptime -p)\e[0m\n"
 
-gitpush(){
+gitp(){
   [ "$1" ] || { echo "Missing comment"; return 1; }
   git add . && git commit -am "$1" && git push
 }
