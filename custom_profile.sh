@@ -30,6 +30,7 @@ alias ..="cd .."
 alias ~="cd ~"
 alias mount="mount | column -t"
 alias h="history"
+alias docker="podman "
 
 export BLOCK_SIZE=human-readable
 
